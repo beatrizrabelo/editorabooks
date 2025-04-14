@@ -1,0 +1,6 @@
+pip install dash pandas
+
+
+
+
+python app.py

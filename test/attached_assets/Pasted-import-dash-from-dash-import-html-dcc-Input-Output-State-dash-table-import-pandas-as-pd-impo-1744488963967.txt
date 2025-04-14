@@ -1,0 +1,90 @@
+import dash
+from dash import html, dcc, Input, Output, State, dash_table
+import pandas as pd
+import os
+
+# Caminho do arquivo CSV
+CSV_PATH = 'livros.csv'
+
+# Verifica se o arquivo CSV já existe, caso contrário, cria um novo com as colunas padrão
+if os.path.exists(CSV_PATH):
+    df_livros = pd.read_csv(CSV_PATH)
+else:
+    df_livros = pd.DataFrame(columns=['Título', 'Autor', 'Gênero', 'Ano'])
+
+# Criação do app Dash
+app = dash.Dash(__name__, external_stylesheets=['https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css'])
+app.title = "Biblioteca Pessoal"
+
+# Layout do app
+app.layout = html.Div([
+    html.Div([
+        html.H2("📚 Biblioteca Pessoal", className="mb-4 text-center"),
+
+        # Formulário para adicionar livros
+        html.Div([
+            dcc.Input(id='input-titulo', type='text', placeholder='Título', className='form-control mb-2'),
+            dcc.Input(id='input-autor', type='text', placeholder='Autor', className='form-control mb-2'),
+            dcc.Input(id='input-genero', type='text', placeholder='Gênero', className='form-control mb-2'),
+            dcc.Input(id='input-ano', type='number', placeholder='Ano', className='form-control mb-2'),
+
+            # Botão para adicionar livro
+            html.Button("Adicionar Livro", id='botao-adicionar', className='btn btn-primary mb-3 w-100'),
+        ], className="col-md-6 offset-md-3"),
+
+        html.Hr(),
+
+        # Tabela para exibir livros cadastrados
+        html.Div([
+            html.H4("📖 Livros cadastrados:", className="mb-3"),
+            dash_table.DataTable(
+                id='tabela-livros',
+                columns=[
+                    {'name': col, 'id': col} for col in ['Título', 'Autor', 'Gênero', 'Ano']
+                ],
+                data=df_livros.to_dict('records'),  # Exibe os livros carregados do CSV
+                style_cell={'textAlign': 'left', 'padding': '5px'},
+                style_header={'backgroundColor': '#007bff', 'color': 'white'},
+                style_table={'overflowX': 'auto'},
+            )
+        ], className="col-md-10 offset-md-1"),
+    ], className="container mt-4")
+])
+
+# Callback para adicionar livro ao CSV e atualizar a tabela
+@app.callback(
+    Output('tabela-livros', 'data'),  # Atualiza a tabela com os livros
+    Input('botao-adicionar', 'n_clicks'),  # Aciona quando o botão for clicado
+    State('input-titulo', 'value'),  # Valor do título
+    State('input-autor', 'value'),  # Valor do autor
+    State('input-genero', 'value'),  # Valor do gênero
+    State('input-ano', 'value'),  # Valor do ano
+    prevent_initial_call=True  # Não chama no início
+)
+def adicionar_livro(n_clicks, titulo, autor, genero, ano):
+    global df_livros
+
+    # Verifica se os campos estão preenchidos
+    if not titulo or not autor or not genero or not ano:
+        return df_livros.to_dict('records')  # Retorna a tabela sem mudanças caso algum campo esteja vazio
+
+    # Cria um novo livro e adiciona ao dataframe
+    novo_livro = pd.DataFrame([{
+        'Título': titulo,
+        'Autor': autor,
+        'Gênero': genero,
+        'Ano': int(ano)
+    }])
+
+    # Adiciona o novo livro ao dataframe
+    df_livros = pd.concat([df_livros, novo_livro], ignore_index=True)
+    
+    # Salva o dataframe atualizado no CSV
+    df_livros.to_csv(CSV_PATH, index=False)
+
+    # Retorna os dados atualizados da tabela para o frontend
+    return df_livros.to_dict('records')
+
+# Inicia o servidor Dash
+if __name__ == '__main__':
+    app.run(debug=True)

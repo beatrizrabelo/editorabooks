@@ -1,0 +1,78 @@
+/* Estilos personalizados para a aplicação de biblioteca */
+
+/* Estilos da página de detalhes do livro */
+.book-details {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.book-info {
+    border-left: 4px solid #007bff;
+    padding-left: 15px;
+}
+
+/* Efeito hover na tabela */
+.dash-table-container .dash-spreadsheet-container .dash-spreadsheet-inner table {
+    --hover-color: rgba(0, 123, 255, 0.1);
+    --selected-background: rgba(0, 123, 255, 0.2);
+}
+
+/* Estilos para avaliação por estrelas */
+.rating {
+    color: #ffc107;
+    font-size: 1.2rem;
+}
+
+/* Melhoria nos estilos dos formulários */
+.form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* Efeitos hover nos botões */
+.btn-primary:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+/* Garante que o slider tenha cores adequadas */
+.rc-slider-track {
+    background-color: #007bff;
+}
+
+.rc-slider-handle {
+    border-color: #007bff;
+}
+
+.rc-slider-handle:hover,
+.rc-slider-handle:active {
+    border-color: #0056b3;
+}
+
+/* Adiciona margem a todos os grupos de formulário */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+/* Melhoria visual nos alertas */
+.alert {
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+/* Adiciona um pouco de espaço para o conteúdo principal */
+.container {
+    padding-bottom: 2rem;
+}
+
+/* Efeito de transição suave para interações */
+button, a, .form-control {
+    transition: all 0.2s ease-in-out;
+}
