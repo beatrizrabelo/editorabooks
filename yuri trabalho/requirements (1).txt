@@ -1,0 +1,14 @@
+streamlit==1.31.0
+pandas==2.1.4
+pillow==10.0.0
+streamlit-option-menu==0.3.2
+streamlit-lottie==0.0.5
+requests==2.31.0
+
+
+
+pip install streamlit pandas pillow streamlit-option-menu streamlit-lottie requests
+
+
+
+streamlit run app.py
